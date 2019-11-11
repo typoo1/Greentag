@@ -1,4 +1,5 @@
 import os
+import os.path
 import sys
 import re
 import datetime
@@ -15,6 +16,9 @@ AITm = "^AIT.....[0-9][0-9][0-9]"
 BGTc = "^BGT...[0-9][0-9][0-9]"
 BGTm = "^BGT.....[0-9][0-9][0-9]"
 
+path = os.path.dirname(os.path.abspath('Main.py'))
+path = path + "\\"
+
 offlineReg = []
 xstoreRegaR = []
 xstoreRegbR = []
@@ -23,10 +27,9 @@ xstoreRegaM = []
 culinaryRega = []
 culinaryRegb = []
 
-driverP = (r"C:\data\Main\chromedriver.exe") #TODO find path
+driverP = (path + r"chromedriver.exe") #TODO find path
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
-
 
 offlineC = 0
 
@@ -36,6 +39,8 @@ f = open("testfile.txt", "w+")
 
 outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
 accounts= win32com.client.Dispatch("Outlook.Application").Session.Accounts
+
+global tFolder
 
 
 def printCulGreB(reg):
@@ -171,6 +176,7 @@ class Register:
 def emailleri_al(folder):
     messages = folder.Items
     a=len(messages)
+    print("parsing the following emails...\n")
     messages = sorted(messages, key=lambda messages: messages.SentOn)
     if a>0:
         for message2 in reversed(messages):
@@ -184,7 +190,6 @@ def emailleri_al(folder):
                             print("***********************", file =f)
                             print(message2.Subject, file=f)
                             print("***********************", file=f)
-                            print(str(message2.SentOn)[:-15])
                             print(str(message2.SentOn)[:-15], file=f)
                             #manipulate the string
                             output = message2.Body
@@ -210,17 +215,46 @@ def emailleri_al(folder):
                                     # regNum = regNum + 1
                                 i = i + 1
                         else:
+                            print()
                             break
                     print(sender, file=f)
-            except:
-                print(sys.exc_info())
-                pass
-
                 try:
                     message2.Save
                     message2.Close(0)
                 except:
                     pass
+            except:
+                print(sys.exc_info())
+                pass
+
+                
+
+if not (os.path.exists(path + "config.txt")):
+    print("Config file not found, performing first time setup")
+    config = open("config.txt", "w+")
+    x = input("Please enter the name of the folder your register reports are put in").lower()
+    config.write("Outlook folder: " + x)
+    tFolder = x
+    config.close()
+else:
+    config = open("config.txt", "r")
+    x = config.read()
+    y = []
+    y = x.split()
+    l = len(y)
+    i = 2
+    fname = ""
+    while i < l:
+        fname = fname + y[i] + " "
+        i += 1
+    fname = fname[:-1]
+    tFolder = fname
+    
+    config.close()
+
+    
+    
+    
 
 for account in accounts:
     global inbox
@@ -228,19 +262,17 @@ for account in accounts:
     inbox = outlook.Folders(account.DeliveryStore.DisplayName)
     print("****Account Name*********************", file=f)
     print(account.DisplayName, file=f)
-    print(account.DisplayName)
+    print("From " + account.DisplayName +"\n")
     print("*************************************", file=f)
-    tFolder = input("What folder should I look in? ")
     folders = inbox.Folders
     tarDate = datetime.date.today()
-    print("processing mail from " + str(tarDate))
+    print("processing mail from the " + tFolder + " from the date " + str(tarDate) + "\n")
 
     for folder in folders:
         print("*****Folder Name*****************", file=f)
         print(folder, file=f)
         print("*********************************", file=f)
         if(str(folder).lower() == tFolder.lower()):
-            print(str(folder) + " " + tFolder)
             emailleri_al(folder)
 
         # a = len(folder.folders)
@@ -260,6 +292,7 @@ for reg in registers:
         reg.printReg()
         offlineC += 1
         offlineReg.append(reg)
+print()
 print("There are " + str(len(registers)) + " registers reported on and " + str(offlineC) + " offline registers")
 
 for reg in offlineReg:
@@ -276,8 +309,9 @@ for reg in offlineReg:
     if (re.search("^AITRCP", reg.name) or (re.search("^AITMCP", reg.name))):
         culinaryRega.append(reg)
 
+print()
 printReg()
-if(input("Proceed with form filler? Y/N").lower() == "y"):
+if(input("\nProceed with form filler? Y/N \n").lower() == "y"):
     fillForms()
 
 
