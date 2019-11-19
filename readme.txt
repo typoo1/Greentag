@@ -1,19 +1,19 @@
 Python 3.7.5
 Setup:
-Ensure that Chromedriver.exe is in the same folder as SpeedTag1_3.exe
+Ensure that Chromedriver.exe is in the same folder as SpeedTag1.5.exe
 Outlook:
 Setup rules to send all register reports to one folder
 The easiest method is to use the rules wizard and move all emails from the relevent email addresses to the correct folder.
 
 
 User Instructions:
-Launch SpeedTag1_3.exe as any other .exe, no admin permissions should be required.
+Launch SpeedTag1.5.exe as any other .exe, no admin permissions should be required.
 A command prompt will open. Depending on if you have a config file set up yet or not, said file will either be loaded, or you'll be prompted to create the file through the script.
 If an error occurs around the config file, it is recommended to delete the file and try to set it up again.
 If the error persists, email Tye.Gallagher@buschgardens.com
 
 Maintenece and Operation:
-Speedtag1_3.exe connects to your outlook automatically as long as you are signed in through the Windows win32com package.
+Speedtag1.5.exe connects to your outlook automatically as long as you are signed in through the Windows win32com package.
 Upon opening the first time it will request a folder to search in for Greentag emails. (Capitalization is not important for any user inputs)
 The program will only look at emails sent on the current sytem date.
 
@@ -41,6 +41,10 @@ The results of the scan are used to create Register objects which hold the name,
 The register objects are then sorted into arrays listing offline registers for each park and department.
 Once the full email is parsed into these arrays, the script then prints all registers held in the offline registers array
 The script then generates a greentag statement for offline registers to be pasted into the greentag online portal.
+
+The script will then query AD to find the AD description for objects matching the name of the registeres listed as offline.
+It uses this information to set a location for all the offline registers only to improve performance and reduce stress on AD.
+The program will then remove any locations from the offline report that begin with "offline" to save on processing incidents that aren't required or are already open.
 
 The final prompt will ask the user if they would like to begin filling forms.
 if the user says yes, the program will then begin launching chrome windows which will navigate to the Service Now homepage and then to the new incident page
