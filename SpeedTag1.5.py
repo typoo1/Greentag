@@ -338,38 +338,15 @@ class Register:
         x = ""
         if(re.search("^" + Park2, name)):
             self.park = Park2Full
-            if(re.search("MMPOS", name) or re.search("RMPOS", name)):
-                
-                q.execute_query(
-                    attributes = ["CN", "description"],
-                    where_clause = "CN = '" + name + "'",
-                    base_dn = "OU=Xstore,OU=_Special Needs - Advertise & Install - No Reboot,OU=Computers,OU=" + P1ADOU + ",DC=nam,DC=int,DC=local")
-            elif(re.search("CP", name)):
-                q.execute_query(
-                    attributes = ["CN", "description"],
-                    where_clause = "CN = '" + name + "'",
-                    base_dn = "OU=Culinary_POS,OU=_Special Needs - Advertise & Install - No Reboot,OU=Computers,OU=" + P1ADOU + ",DC=nam,DC=int,DC=local")
-            for row in q.get_results():
-                self.loc = str(row["description"])[1:-3]
         else:
             if(re.search("^" + Park1, name)):
                 self.park = Park1Full
-                if(re.search("MMPOS", name) or re.search("RMPOS", name)):
-                    q.execute_query(
-                        attributes = ["CN", "description"],
-                        where_clause = "CN = '" + name + "'",
-                        base_dn = "OU=Xstore,OU=_Special Needs - Advertise & Install - No Reboot,OU=Computers,OU=" + P1ADOU + ",DC=nam,DC=int,DC=local")
-                elif(re.search("CP", name)):
-                    q.execute_query(
-                        attributes = ["CN", "description"],
-                        where_clause = "CN = '" + name + "'",
-                        base_dn = "OU=Culinary_POS,OU=_Special Needs - Advertise & Install - No Reboot,OU=Computers,OU=" + P1ADOU + ",DC=nam,DC=int,DC=local")
-                for row in q.get_results():
-                    self.loc = str(row["description"])[1:-3]
             else:
                 self.park = "ERROR"
         if(status == "online" or status == "offline"):
             self.status = status
+            if(status == "offline"):
+                self.setLoc()
         else:
                 self.status = "ERROR"
                 print("REGISTER STATUS NOT FOUND, PLEASE REVIEW " + self.name)
@@ -379,6 +356,20 @@ class Register:
     """
     def printReg(self):
         print("Register " + self.name + " at " + self.park + ": " + self.loc + " is " + str(self.status))
+
+    def setLoc(self):
+        if(re.search("MMPOS", self.name) or re.search("RMPOS", self.name)):
+            q.execute_query(
+                attributes = ["CN", "description"],
+                where_clause = "CN = '" + self.name + "'",
+                base_dn = "OU=Xstore,OU=_Special Needs - Advertise & Install - No Reboot,OU=Computers,OU=" + P1ADOU + ",DC=nam,DC=int,DC=local")
+        elif(re.search("CP", self.name)):
+            q.execute_query(
+                attributes = ["CN", "description"],
+                where_clause = "CN = '" + self.name + "'",
+                base_dn = "OU=Culinary_POS,OU=_Special Needs - Advertise & Install - No Reboot,OU=Computers,OU=" + P1ADOU + ",DC=nam,DC=int,DC=local")
+        for row in q.get_results():
+            self.loc = str(row["description"])[1:-3]
 
 """
 Responsible for parsing emails
