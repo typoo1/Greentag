@@ -1,0 +1,8 @@
+OutlookFolder: rsr
+CityCode: SAT
+Customer0: John Blevins
+Customer1: John Blevins
+Customer2: John Blevins
+Customer3: John Blevins
+Customer4: John Blevins
+Customer5: John Blevins
