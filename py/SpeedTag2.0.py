@@ -94,6 +94,7 @@ registers = [] #Array that holds all registers
 
 f = open("testfile.txt", "w+") #test file for debugging purposes
 
+
 """
 Attaches to client outlook to grab emails
 """
@@ -465,20 +466,23 @@ class Register:
                 self.status = "ERROR"
                 print("REGISTER STATUS NOT FOUND, PLEASE REVIEW " + self.name)
         self.HDD = HDDVal
-        print(self.name)
                 
     """
     Method that defines how to print information stored in the Register object
     """
-    def printReg(self):
+    def printReg(self, x):
         if(self.status == "offline"):
             print("Register " + self.name + " at " + self.park + ": " + self.loc + " is " + str(self.status))
+            print("Register " + self.name + " at " + self.park + ": " + self.loc + " is " + str(self.status), file = x)
         if(self.status == "HDD problem"):
             print("Register " + self.name + " at " + self.park + ": " + self.loc + " is low on HDD space.")
+            print("Register " + self.name + " at " + self.park + ": " + self.loc + " is low on HDD space.", file = x)
         if(self.status == "Repl problem"):
             print("Register " + self.name + " at " + self.park + ": " + self.loc + " is experiencing a replication problem.")
+            print("Register " + self.name + " at " + self.park + ": " + self.loc + " is experiencing a replication problem.", file = x)
         if(self.status == "Close Failure"):
             print("Register " + self.name + " at " + self.park + ": " + self.loc + " experienced a store close failure.")
+            print("Register " + self.name + " at " + self.park + ": " + self.loc + " experienced a store close failure.", file = x)
             
 
     def setLoc(self):
@@ -758,15 +762,17 @@ getVer()
 getConfig()
 getEmails(accounts)
 
+regList = open("Reglist.txt", "w+")
 for reg in registers:
     if(reg.status.lower() == "offline" or reg.status.upper() == "ERROR"):
-        reg.printReg()
+        reg.printReg(regList)
         offlineC += 1
         offlineReg.append(reg)
     if(reg.status == "HDD problem" or reg.status == "Repl problem" or reg.status == "Close Failure"):
-        reg.printReg()
+        reg.printReg(regList)
         offlineC += 1
         probReg.append(reg)
+regList.close()
 print()
 print("There are " + str(len(registers)) + " registers reported on and " + str(offlineC) + " registers that need attention")
 
