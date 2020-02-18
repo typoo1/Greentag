@@ -1,0 +1,9 @@
+***FORMAT***
+EXPCus: "Park 1 Cul Cus", "Park 2 Cul Cus", "Park 3 Cul Cus", "Park 1 Merch Cus", "Park 2 Merch Cus", "Park 3 Merch Cus", "Park 1 MPR Cus", "Park 2 MPR Cus", "Park 3 MPR Cus"
+***DO NOT EDIT***
+TMPCus: Samuel Goldstein, Tyrone Robinson, blank, Terrence Lattimore, Sidra Davis, blank, blank, blank, blank
+ORLCus: Testc, Testc1, Testc2, Testm, Testm1, Testm2, TestMPR, TestMPR1, TestMPR2
+SDOCus: Samuel Goldstein, Tyrone Robinson, blank, Terrence Lattimore, Sidra Davis, blank, blank, blank, blank
+SATCus: John Blevins, John Blevins, John Blevins, John Blevins, John Blevins, John Blevins, John Blevins, John Blevins, John Blevins
+LAGCus: Samuel Goldstein, Tyrone Robinson, blank, Terrence Lattimore, Sidra Davis, blank, blank, blank, blank
+WILCus: Samuel Goldstein, Tyrone Robinson, blank, Terrence Lattimore, Sidra Davis, blank, blank, blank, blank
